@@ -1,0 +1,17 @@
+<!-- <h1> Working!!! </h1> -->
+<div class="container" style="margin-top: 10px;">
+    <!-- <h1> Working </h1> -->
+    <a class="btn btn-primary" href="/add/project"> Add New Project </a>
+
+    <% project.forEach(pro => { %>
+        <div class="card" style="width: 18rem; margin: 10px;">
+            <div class="card-body">
+                <h5 class="card-title"> <%= pro.name %> </h5>
+                <h6 class="card-subtitle mb-2 text-muted"> <big> <%= pro.completeValue %>% </big> complete </h6>
+                <p class="card-text"> <%= pro.description %> </p>
+                <a href="/specific/<%= pro.id%>" class="card-link"> View Tasks </a>  <a href="/delete/<%= pro.id%>" class="card-link"> Delete Project </a>
+            </div>
+        </div>
+    <% }) %>
+
+</div>

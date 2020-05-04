@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3> <%= project.name %> </h3>
+        </div>
+        <div class="col-sm-6">
+            <%= project.description %>
+        </div>
+        <div class="col-sm-3">
+          <h3>   <%= project.completeValue %> % complete </h3>
+        </div>
+    </div>
+
+    <form action="/add/task/<%= project.id %>" method="POST">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="project-name" name="task" placeholder="enter the task">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-primary"> Add task </button>
+            </div>
+        </div>
+    </form>
+    <% let i = 0; %>
+    <% if(project.tasks.length != 0){ %>
+        <ul>
+            <% project.tasks.forEach( task => { %>
+                    <% i++ ; %>
+                    <% i = i.toString() ; %>
+                    <li> <%= task.body %>  - <a href="/delete/task/<%=project.id %>/<%=task.body%>"> Delete </a> - 
+                        
+                        <a href="/complete/task/<%=project.id %>/<%=task.body%>"> Complete </a>
+                        <% if(task.isComplete == true){ %>
+                            - Completed
+                       <% } %>
+                    </li>
+            <% }); %>
+        </ul>
+    <% }else{ %>
+        <p> No tasks added to the project </p>
+    <%}%>
+</div>
