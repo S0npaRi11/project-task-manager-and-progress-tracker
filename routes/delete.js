@@ -13,7 +13,7 @@ router.get('/:id', (req,res) => {
 });
 
 router.get('/task/:id/:task', (req,res) => {
-    // res.send('deleting the project is initiated')
+    // res.send('deleting the task is initiated')
 
     projects.findOneAndUpdate({_id:req.params.id}, {$pull: {tasks: {body: req.params.task}}},(err) => {
         if(err) console.log(err);
@@ -30,12 +30,8 @@ router.get('/task/:id/:task', (req,res) => {
                         }
                     });
 
-                    if(result.tasks.length == 0 || result.tasks.length == 1){
-                        completeValue = 0;
-                    }else {
-                        completeValue = trueValue / result.tasks.length * 100;
-                    }
-
+                    completeValue = trueValue / result.tasks.length * 100;
+                
                     projects.findByIdAndUpdate(req.params.id,{completeValue: completeValue}, (err) => {
                         if(err) console.log(err);
                         else{
@@ -46,6 +42,30 @@ router.get('/task/:id/:task', (req,res) => {
                 }
                 
             });
+        }
+    });
+});
+
+//delete task2 subtask
+
+router.get('/task2/:id/:task2', (req,res) => {
+    projects.findByIdAndUpdate(req.params.id, {$pull:{task2:{body: req.params.task2}}},(err) => {
+        if(err) console.log(err);
+        else{
+            // evaluation here
+
+            res.redirect('/specific/' + req.params.id);
+        }
+    });
+});
+
+router.get('/task3/:id/:task3', (req,res) => {
+    projects.findByIdAndUpdate(req.params.id, {$pull:{task3:{body: req.params.task3}}},(err) => {
+        if(err) console.log(err);
+        else{
+            // evaluation here
+
+            res.redirect('/specific/' + req.params.id);
         }
     });
 });

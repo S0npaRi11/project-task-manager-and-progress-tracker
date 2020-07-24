@@ -24,6 +24,13 @@ const projectScheema = new mongoose.Schema({
     completeValue:{
         type: Number,
         default: 0
+    },task2:{
+        type: Array,
+        default: []
+    },
+    task3:{
+        type:Array,
+        default:[]
     }
 });
 

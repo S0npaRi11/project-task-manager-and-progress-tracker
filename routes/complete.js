@@ -38,18 +38,8 @@ router.get('/task/:id/:task', (req,res) => {
                                     trueValue += 1;
                                 }
                             });
-                            // console.log(falseValue);
-                            //console.log(falseValue);
-                            if(result.tasks.length == 1 || result.tasks.length == 0){
-                                completeValue = 0;
-                            }else{
-                                if(trueValue == falseValue){
-                                    completeValue = 100 / 2;
-                                }else{
-                                    completeValue = trueValue / result.tasks.length * 100;
-                                }
-                                
-                            }
+                           
+                            completeValue = trueValue / result.tasks.length * 100;
 
                             projects.findByIdAndUpdate(req.params.id,{completeValue: completeValue}, (err) => {
                                 if(err) console.log(err);
@@ -66,5 +56,27 @@ router.get('/task/:id/:task', (req,res) => {
         }
     });    
 });
+
+router.get('/task2/:id/:task2', (req,res) => {
+    projects.findOneAndUpdate({'task2.body': req.params.task2},{$set:{'task2.$.isComplete': true}}, err => {
+        if(err) console.log(err);
+        else{
+            // evaluation here
+
+            res.redirect('/specific/' + req.params.id);
+        }
+    });
+})
+
+router.get('/task3/:id/:task3', (req,res) => {
+    projects.findOneAndUpdate({'task3.body': req.params.task3},{$set:{'task3.$.isComplete': true}}, err => {
+        if(err) console.log(err);
+        else{
+            // evaluation here
+
+            res.redirect('/specific/' + req.params.id);
+        }
+    });
+})
 
 module.exports = router;

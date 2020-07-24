@@ -1,15 +1,8 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <h3> <%= project.name %> </h3>
+    <div class="jumbotron border rounded shadow-sm d-lg-flex justify-content-lg-start align-items-lg-start" style="padding: 25px;margin: 25px 10px;background-color: #9883E5;color: #fff;font-family: Raleway, sans-serif;">
+            <h1>&nbsp;<%= project.name %></h1>
+            <p></p>
         </div>
-        <div class="col-sm-6">
-            <%= project.description %>
-        </div>
-        <div class="col-sm-3">
-          <h3>   <%= project.completeValue %> % complete </h3>
-        </div>
-    </div>
 
     <form action="/add/task/<%= project.id %>" method="POST">
         <div class="row">
@@ -23,19 +16,72 @@
             </div>
         </div>
     </form>
-    <% let i = 0; %>
+    <% let task2 = project.task2.length %>
+    <% let task3 = project.task3.length %>
     <% if(project.tasks.length != 0){ %>
+
         <ul>
             <% project.tasks.forEach( task => { %>
-                    <% i++ ; %>
-                    <% i = i.toString() ; %>
-                    <li> <%= task.body %>  - <a href="/delete/task/<%=project.id %>/<%=task.body%>"> Delete </a> - 
+                    <li> <%= task.body %>  - 
+                        <a href="/delete/task/<%=project.id %>/<%=task.body%>"> Delete </a> - 
                         
-                        <a href="/complete/task/<%=project.id %>/<%=task.body%>"> Complete </a>
+                        <button onclick="showTaskForm('<%=task.body%>')" class="btn btn-sm btn-primary"> Add Subtask </button> - 
+                        
                         <% if(task.isComplete == true){ %>
-                            - Completed
-                       <% } %>
+                             Completed
+                       <% } else{ %>
+                            <a href="/complete/task/<%=project.id %>/<%=task.body%>">  Complete </a>
+                        <% } %>
+                       <form action="/add/task2/<%=project.id %>/<%=task.body%>" style="display: none;"" method="POST" id="<%=task.body%>">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="project-name" name="task" placeholder="enter the task">
+                            </div>
+                            <button type="submit" class="btn btn-primary"> Add subtask </button>
+                        </form>
                     </li>
+                    <% if(task2 != 0){ %>
+                        <ul>
+                        <% project.task2.forEach(t2 => { %>
+                            <% if(t2.parentBody == task.body){ %>
+                                <li> <%= t2.body %>  - 
+                                    <a href="/delete/task2/<%=project.id %>/<%=t2.body%>"> Delete </a> - 
+                                    
+                                    <button onclick="showTaskForm('<%=t2.body%>')" class="btn btn-sm btn-primary"> Add Subtask </button> - 
+                                    
+                                    <% if(t2.isComplete == true){ %>
+                                         Completed
+                                   <% } else{ %>
+                                        <a href="/complete/task2/<%=project.id %>/<%=t2.body%>">  Complete </a>
+                                   <% } %>
+                                   <form action="/add/task3/<%=project.id %>/<%=t2.body%>" style="display: none;"" method="POST" id="<%=t2.body%>">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="project-name" name="task" placeholder="enter the subtask">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary"> Add subtask </button>
+                                    </form>
+                                </li>
+                                
+                                <% if(task3 != 0){ %>
+                                    <ul>
+                                        <% project.task3.forEach(t3 => { %>
+                                            <% if(t3.parentBody == t2.body){ %>
+                                                <li> <%= t3.body %>  - 
+                                                    <a href="/delete/task3/<%=project.id %>/<%=t3.body%>"> Delete </a> - 
+                                                    
+                                                    <% if(t3.isComplete == true){ %>
+                                                        Completed
+                                                    <% } else{ %>
+                                                        <a href="/complete/task3/<%=project.id %>/<%=t3.body%>"> Complete </a>
+                                                   <% }%>
+                                                </li>
+                                            <% } %>
+                                        <% }); %>
+                                    </ul>
+                               <% } %>
+                            <% } %>
+                        <%  }); %>
+                        </ul>
+                    <% } %>
             <% }); %>
         </ul>
     <% }else{ %>
